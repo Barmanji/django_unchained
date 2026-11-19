@@ -119,6 +119,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 # static files like CSS/JS to serve in HTML
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# `collectstatic` output; map this directory to /static/ on the host
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Email
