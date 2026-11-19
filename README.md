@@ -79,27 +79,3 @@ djangoChickbum/
 
 `photo` is nullable, so the list template renders the `<img>` only when a file exists.
 
-## Deploying for free
-
-Two realistic free options. Both need at least two changes first: set `ALLOWED_HOSTS` to your
-domain, and read `SECRET_KEY` from an environment variable instead of the hardcoded dev key.
-Also turn `DEBUG` off. SQLite plus `media/` on local disk is fine for a demo, not for anything
-that matters.
-
-**PythonAnywhere — least effort, data survives.** The free Beginner account gives one web app at
-`yourname.pythonanywhere.com`, 512 MB of persistent disk, and no custom domain. Because the disk
-persists, `db.sqlite3` and uploaded photos stay put. Rough flow: clone the repo in a Bash console,
-make a virtualenv with Python 3.13+, `pip install -r requirements.txt`, add a Manual-config web
-app, point the WSGI file at this project and set
-`DJANGO_SETTINGS_MODULE=djangoChickbum.settings`, add your host to `ALLOWED_HOSTS`, run
-`migrate`, map `/static/` and `/media/` in the web app's static-files section, reload. The free
-tier blocks outbound internet except for a whitelist; this app doesn't call anything external.
-
-**Render — git push to deploy, database resets.** The free web service has 512 MB RAM and spins
-down after 15 minutes without traffic (about a minute to wake). Its filesystem is ephemeral, so
-SQLite and `media/` are wiped on every deploy, restart, or spin-down, and the free Postgres
-option expires 30 days after creation. It also needs two packages this repo doesn't have yet:
-`gunicorn` to serve and `whitenoise` for static files. More setup, nicer workflow.
-
-For a demo you don't want to babysit, PythonAnywhere. For push-to-deploy and a custom domain,
-Render — accepting that the data resets.
