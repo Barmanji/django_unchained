@@ -1,8 +1,8 @@
 """
-URL configuration for djangoChickbum project.
+URL configuration for the djangoChickbum project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.1/topics/http/urls/
+    https://docs.djangoproject.com/en/5.0/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -15,11 +15,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, re_path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('tweet/', include('tweet.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 
-    # Hot reload
-    path("__reload__/", include("django_browser_reload.urls")),
-]
+    # Liveness probe for uptime checks / hosting platforms
+    re_path(r'^health/?$', views.health, name='health'),
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
